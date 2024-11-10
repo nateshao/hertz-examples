@@ -30,8 +30,9 @@ import (
 
 // Ping .
 func Ping(ctx context.Context, c *app.RequestContext) {
+	fmt.Sprintf(mw.IdentityKey, "%+v")
 	user, _ := c.Get(mw.IdentityKey)
 	c.JSON(200, utils.H{
-		"message": fmt.Sprintf("username:%v", user.(*model.User).UserName),
+		"message": fmt.Sprintf("username:%v", user.(*model.User).Name),
 	})
 }

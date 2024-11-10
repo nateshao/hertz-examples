@@ -20,7 +20,7 @@ import "gorm.io/gorm"
 
 type User struct {
 	gorm.Model
-	UserName string `json:"user_name" column:"user_name"`
+	Name     string `json:"name" column:"name"`
 	Email    string `json:"email" column:"email"`
 	Password string `json:"password" column:"password"`
 }

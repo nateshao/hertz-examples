@@ -24,9 +24,9 @@ func CreateUsers(users []*model.User) error {
 	return DB.Create(users).Error
 }
 
-func FindUserByNameOrEmail(userName, email string) ([]*model.User, error) {
+func FindUserByNameOrEmail(name, email string) ([]*model.User, error) {
 	res := make([]*model.User, 0)
-	if err := DB.Where(DB.Or("user_name = ?", userName).
+	if err := DB.Where(DB.Or("name = ?", name).
 		Or("email = ?", email)).
 		Find(&res).Error; err != nil {
 		return nil, err
@@ -36,7 +36,7 @@ func FindUserByNameOrEmail(userName, email string) ([]*model.User, error) {
 
 func CheckUser(account, password string) ([]*model.User, error) {
 	res := make([]*model.User, 0)
-	if err := DB.Where(DB.Or("user_name = ?", account).
+	if err := DB.Where(DB.Or("name = ?", account).
 		Or("email = ?", account)).Where("password = ?", password).
 		Find(&res).Error; err != nil {
 		return nil, err

@@ -18,6 +18,7 @@ package handler
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/cloudwego/hertz-examples/bizdemo/hertz_jwt/biz/dal/mysql"
@@ -30,7 +31,7 @@ import (
 // Register user register handler
 func Register(ctx context.Context, c *app.RequestContext) {
 	var registerStruct struct {
-		Username string `form:"username" json:"username" query:"username" vd:"(len($) > 0 && len($) < 128); msg:'Illegal format'"`
+		Name     string `form:"name" json:"name" query:"name" vd:"(len($) > 0 && len($) < 128); msg:'Illegal format'"`
 		Email    string `form:"email" json:"email" query:"email" vd:"(len($) > 0 && len($) < 128) && email($); msg:'Illegal format'"`
 		Password string `form:"password" json:"password" query:"password" vd:"(len($) > 0 && len($) < 128); msg:'Illegal format'"`
 	}
@@ -42,7 +43,8 @@ func Register(ctx context.Context, c *app.RequestContext) {
 		})
 		return
 	}
-	users, err := mysql.FindUserByNameOrEmail(registerStruct.Username, registerStruct.Email)
+	fmt.Sprintf(registerStruct.Name, "%+v")
+	users, err := mysql.FindUserByNameOrEmail(registerStruct.Name, registerStruct.Email)
 	if err != nil {
 		c.JSON(http.StatusOK, utils.H{
 			"message": err.Error(),
@@ -61,7 +63,7 @@ func Register(ctx context.Context, c *app.RequestContext) {
 
 	if err = mysql.CreateUsers([]*model.User{
 		{
-			UserName: registerStruct.Username,
+			Name:     registerStruct.Name,
 			Email:    registerStruct.Email,
 			Password: utils2.MD5(registerStruct.Password),
 		},

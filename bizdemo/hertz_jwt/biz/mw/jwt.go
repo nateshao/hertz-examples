@@ -75,13 +75,13 @@ func InitJwt() {
 		IdentityHandler: func(ctx context.Context, c *app.RequestContext) interface{} {
 			claims := jwt.ExtractClaims(ctx, c)
 			return &model.User{
-				UserName: claims[IdentityKey].(string),
+				Name: claims[IdentityKey].(string),
 			}
 		},
 		PayloadFunc: func(data interface{}) jwt.MapClaims {
 			if v, ok := data.(*model.User); ok {
 				return jwt.MapClaims{
-					IdentityKey: v.UserName,
+					IdentityKey: v.Name,
 				}
 			}
 			return jwt.MapClaims{}
